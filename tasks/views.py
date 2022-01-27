@@ -1,8 +1,3 @@
-# Add your Views Here
-# Add all your views here
-from asyncio import tasks
-from multiprocessing import context
-from turtle import title
 
 from django.contrib import admin
 from django.http import HttpResponse, HttpResponseRedirect
@@ -12,7 +7,6 @@ from django.urls import path
 from tasks.models import Task
 
 
-completed_task = []
 
 def tasks_filter(task):
     if(task in completed_task):
@@ -35,10 +29,9 @@ def tasks_view(request):
 
 def add_task_view(req):
     task_value = req.GET.get("task")
-    Task(title=task_value).save()
-    #tasks.append(task_value)
-                  
+    Task(title=task_value).save()                  
     return HttpResponseRedirect("/tasks")
+
 
 def delete_task_view(req , index):
     Task.objects.filter(id=index).update(deleted=True)
@@ -51,9 +44,6 @@ def complete_task_view(req , index):
 
 
 def completed_task_view(req):
-    context = {
-        
-    }
     return render(req , "completed.html" , {"tasks" : Task.objects.filter(completed=True).filter(deleted=False)})
 
 
